@@ -85,6 +85,8 @@
 - **印象管理（Impression Management）**：Goffman 的日常生活中的自我呈现理论。
 - **AI与社会认知的相关研究**：如人们对AI代理性的感知及其对人际评价的影响。
 
+****
+
 # Computational analysis of 100 K choice dilemmas: Decision attributes, trade-­off structures, and model-­based prediction
 
 ### 1. 论文的研究目标、解决的实际问题及对产业发展的意义
