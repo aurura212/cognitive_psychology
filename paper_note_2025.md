@@ -270,3 +270,104 @@ min _{\beta_{l}}\left\| v_{c, l}-\sum_{i=1}^{k} \beta_{i, l} u_{i, l}^{h}\right\
 - **强化学习基础**：了解AlphaZero的工作原理，如策略价值网络和蒙特卡洛树搜索。
 - **概念学习理论**：认知心理学中关于人类概念学习的理论，如维果茨基的最近发展区理论。
 - **可解释AI技术**：如概念激活向量（TCAV）等方法，以更好地理解AI内部表征。
+*******
+
+# Large language models that replace human participants can harmfully misportray and flatten identity groups
+### 1. 论文的研究目标与实际问题解决
+#### 1.1 研究目标
+论文旨在揭示大型语言模型（LLMs）在替代人类参与者时，对社会身份群体的表征存在根本性缺陷，并通过理论分析与实证研究验证这些缺陷的危害。
+
+#### 1.2 实际问题
+- **代表性采样难题**：在计算社会科学、用户测试等领域，研究者需招募具有人口学代表性的参与者，而LLMs若要替代人类，需捕捉性别、种族等社会身份的影响。
+- **身份表征失真**：现有LLMs训练机制导致其对 demographic groups 的表征存在“误刻画”（misportrayal）与“扁平化”（flattening）问题，如将女性群体的观点简化为单一叙事。
+- **边缘化群体风险**：这些失真对边缘化群体（如非二元性别者、残障人士）尤为有害，可能延续历史上的认知不公（epistemic injustice）。
+- **misportrayal**: “误刻画”（misportrayal）指的是大型语言模型（LLMs）在被提示特定社会身份时，其生成的响应更倾向于反映外群体（out-group）对该身份的刻板印象或片面认知，而非内群体（in-group）成员的真实自我表达。
+- **flattening**: “flatten”（扁平化）指的是大型语言模型（LLMs）在表征人口统计群体（demographic groups）时，无法捕捉群体内部的多元性和异质性，将复杂的身份特征简化为单一、同质化的表达。
+- **Essentializing identity**：“Essentializing identity”（身份本质化）是指在使用大型语言模型（LLMs）时，通过身份提示将社会身份固化为一种固定、不可改变的核心特征，忽略身份的复杂性和动态性，进而强化 “不同群体间的差异是天生且不可逾越” 的认知偏差。
+
+| Problem | Inherent limitation | Measurements | Reason for harm | Prompting alternative |
+| --- | --- | --- | --- | --- |
+| Misportraying more like out- group imitations rather than in- group representations | Given the written text that LLMs are trained on, an author’s demographic identities are rarely associated with the text itself. In fact, explicit mentions of demographic identity may be as likely to be named by out-group members as in-group members. | (1) Ngram: average pairwise Jaccard distance (2) Ngram: closest-point Jaccard distance (3) SBERT: average pairwise cosine distance (4) SBERT: closest-point cosine distance (5) MC: Wasserstein distance (6) MC: mean diference | Speaking for others can involve the erasure of marginalized voices and reinscription of social hierarchies. | Identity-coded names (for example., Darnell Pierre) instead of identity (for example, Black man) |
+| Flattening demographic groups | Because of loss functions like cross- entropy used during training, models are rewarded for producing the more likely output for any given piece of text, disincentivizing a wide range of permissible answers for any given question. | (1) Ngram: proportion unique (2) SBERT: average pairwise cosine distance (3) SBERT: trace of covariance matrix (4) MC: number of unique responses | Marginalized groups are historically portrayed one dimensionally, and the failure to recognize in-group diferences can preclude intersectionality. | Increasing temperature hyperparameter or other prompt-based techniques to increase diversity |
+| Essentializing identity | Prompting with identities inherently essentializes identity as a relevant diference factor. | (1) SBERT: determinant of covariance matrix (2) SBERT: Vendi score (3) MC: number of unique responses | Essentializing identity can reinforce demographic diferences as inherent and insurmountable. | Prompt along other axes like behavioural persona or political orientation |
+
+
+### 2. 新思路、方法与模型特点。
+
+#### 2.1 创新方法
+- **多维度测量体系**：结合N-gram Jaccard距离、SBERT余弦距离、Wasserstein距离等6种指标，量化LLM响应与人类内/外群体响应的差异。
+- **身份提示实验设计**：针对16种 demographic identities（如黑人女性、Z世代），设计四类问题（R1-R4），比较LLMs（Llama2、GPT-4等）与3200名人类参与者的回答。
+
+#### 2.2 与前人研究的差异
+- **聚焦自由响应而非多选**：突破传统LLM研究的多选范式，通过开放式回答揭示身份表征的细微偏差。
+- **个体层面分析**：关注群体内差异而非总体平均，例如发现LLMs对“非二元性别者”的回答忽视其代词使用的多样性。
+
+### 3. 实验设计与关键结果
+#### 3.1 实验设计
+- **参与者与模型**：招募美国Prolific平台参与者，覆盖5大维度（种族、性别、年龄等）；测试4种LLMs（含开源与闭源）。
+- **问题类型**：
+  - R1-Contingent：如“作为美国女性的生活体验”
+  - R2-Relevant：如“对移民政策的看法”
+  - R3-Subjective：如“判断文本毒性”
+  - R4-Coverage：如“技术在治疗中的角色”
+- **对比组**：人类内群体响应 vs. 人类外群体模仿 vs. LLM响应
+
+#### 3.2 关键数据与结果
+- **误刻画证据**：
+  - GPT-4在R1/R2问题上，67%的非二元性别者响应更接近外群体模仿（图2）。
+  - 视障者身份的LLM响应中，83%的SBERT距离指标显示与外群体更相似。
+- **扁平化证据**：
+  - 所有LLMs的响应多样性（如唯一N-gram比例）比人类低40%-60%（图4）。
+  - GPT-4在“非二元性别体验”问题上，90%回答仅聚焦代词忽视问题，而人类参与者提及身份认同的复杂性。
+- **缓解策略效果**：
+  - 使用身份编码姓名（如Darnell Pierre）替代标签，使黑人女性响应的内群体相似度提升25%（图3）。
+  - 提高温度参数至1.4时，LLM响应多样性接近人类，但伴随语义不连贯。
+
+#### 3.3 启示
+- 相对于直接使用身份标签（如“黑人女性”、“z世代”），使用相关身份具有的特征作为提示可以增加LLM回复的覆盖度
+- 为了增加回复多样性，可以适当增加温度参数
+
+### 4. 未来研究方向与挑战（认知心理学视角）
+#### 4.1 理论拓展
+- **具身认知（Embodied Cognition）缺失**：LLMs缺乏身体经验（如残障者的感知方式），未来需探索具身化训练数据的整合。
+- **社会认知理论应用**：借鉴刻板印象内容模型（SCM），分析LLMs如何习得群体间的情感与认知偏差。
+
+#### 4.2 方法创新
+- **神经认知指标融合**：结合眼动追踪、fMRI等技术，比较人类与LLM在处理身份相关信息时的认知模式差异。
+- **动态身份建模**：开发能捕捉身份流动性（如跨情境的性别表达）的LLM架构，而非静态标签提示。
+
+#### 4.3 伦理挑战
+- **认知不公的算法延续**：需建立“身份表征伦理审查框架”，避免LLMs强化历史上对边缘化群体的认知剥夺。
+- **替代边界界定**：明确LLMs可补充（如试点研究）但不可替代人类的场景，如涉及创伤经历的调研。
+
+### 5. 研究不足与存疑之处
+#### 5.1 方法局限
+- **训练数据覆盖不足**：实验仅针对美国16个群体，未涉及全球37%未联网人口及口头文化群体。
+- **提示工程优化空间**：身份编码姓名的效果在白人群体中不显著（图3），需探索更普适的提示策略。
+
+#### 5.2 理论缺口
+- **身份交互效应缺失**：未分析多重身份（如黑人女性+残障）的交叉影响，而交叉性理论（Intersectionality）指出单一维度分析存在局限。
+- **动态语境处理不足**：LLMs在不同社会情境（如家庭vs.职场）中的身份表征差异未被考察。
+
+#### 5.3 实证存疑
+- **人类数据代表性问题**：Prolific参与者可能存在技术偏好偏差，需与全国代表性样本对比。
+- **长期影响未验证**：LLMs持续替代人类是否会加剧社会认知同质化，缺乏纵向研究证据。
+
+### 6. 创新想法与启发
+#### 6.1 可复用创新点
+- **身份提示替代策略**：使用行为 persona（如“喜欢徒步的环保主义者”）而非 demographic标签，提升响应多样性（图6显示随机persona的覆盖度更高）。
+- **多指标交叉验证**：在LLM评估中结合N-gram、SBERT、Wasserstein距离等多维度指标，避免单一方法偏差。
+
+#### 6.2 启发与背景知识补充
+- **必学理论**：
+  - 立场理论（Standpoint Theory）：理解社会位置如何塑造认知。
+  - 认知不公理论：掌握证言不公（Testimonial Injustice）与解释不公（Hermeneutical Injustice）的机制。
+- **技术工具**：
+  - Sentence-BERT嵌入分析：用于量化文本语义相似度。
+  - 交叉熵损失函数原理：理解LLM扁平化的技术根源。
+
+#### 6.3 实践应用建议
+- **在用户研究中**：仅将LLMs用于补充假设生成，而非替代真实用户访谈，尤其涉及敏感身份时。
+- **在算法开发中**：将“身份表征多样性”作为模型评估指标，如计算响应的SBERT协方差矩阵迹（trace）。
+
+> 论文结论强调：“We urge caution in replacements... but inference-time techniques like identity-coded names can reduce harms.” 这为实际应用提供了权衡框架。
