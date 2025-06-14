@@ -5,6 +5,7 @@
 4. Large language models that replace human participants can harmfully misportray and flatten identity groups
 5. Explicitly unbiased large language models still form biased associations
 6. What large language models know and what people think they know
+7. Emergent social conventions and collective bias in LLM populations
 
 ## 2024
 1. Evaluating large language models in theory of mind tasks
@@ -14,6 +15,7 @@
 5. Deception abilities emerged in large language models
 6. AI can help people feel heard, but an AI label diminishes this impact
 7. A turing test of whether AI chatbots are behaviorally similar to humans
+8. Durably reducing conspiracy beliefs through dialogues with AI
 
 ## 2023
 1. Uncovering the semantics of concepts using GPT-4
