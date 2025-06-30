@@ -6,6 +6,10 @@
 5. Explicitly unbiased large language models still form biased associations
 6. What large language models know and what people think they know
 7. Emergent social conventions and collective bias in LLM populations
+8. A semantic embedding space based on large language models for modelling human beliefs
+9. Large language models without grounding recover non-sensorimotor but not sensorimotor features of human concepts
+10. Cultural tendencies in generative AI
+11. High variability in LLMs’ analogical reasoning
 
 ## 2024
 1. Evaluating large language models in theory of mind tasks
